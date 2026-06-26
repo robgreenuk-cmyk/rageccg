@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rage CCG</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="game-board">
+
+    <!-- TOP: CPU Zone -->
+    <section class="zone cpu-zone">
+      <div class="zone-label">Opponent Pack</div>
+      <div class="card-row characters"></div>
+    </section>
+
+    <!-- MIDDLE: Hunting Grounds -->
+    <section class="zone hunting-grounds">
+      <div class="zone-label">Hunting Grounds</div>
+      <div class="card-row shared-cards"></div>
+    </section>
+
+    <!-- BOTTOM: Player Zone -->
+    <section class="zone player-zone">
+      <div class="card-row characters"></div>
+      <div class="card-row player-hand"></div>
+    </section>
+
+  </div>
+
+  <!-- main.js is in the repo ROOT, not /src/ -->
+  <script type="module" src="/main.js"></script>
+
+</body>
+</html>
