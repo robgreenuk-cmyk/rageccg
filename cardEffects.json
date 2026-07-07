@@ -1,0 +1,596 @@
+{
+  "Buggerhead": {
+    "abilities": [
+      {
+        "id": "buggerhead_redraw",
+        "label": "Buggerhead's Redraw",
+        "sourceText": "While in play, Buggerhead allows you to discard and redraw any 1 sept card at the end of your normal Redraw Phase.",
+        "trigger": { "type": "phaseAction", "phase": "redraw" },
+        "effect": { "type": "discardAndRedrawFromZone", "zone": "septHand", "count": 1 }
+      }
+    ]
+  },
+
+  "Kinfolk Veterinarian": {
+    "abilities": [
+      {
+        "id": "vet_extra_heal",
+        "label": "Veterinarian's Care",
+        "sourceText": "During you Regeneration Phase, the Veterinarian can cure 1 additional damage card (including an aggravated wound) from 1 character in your pack.",
+        "trigger": { "type": "phaseAction", "phase": "regen" },
+        "effect": { "type": "healChosenPackMember" }
+      }
+    ]
+  },
+
+  "Grand Klaive": {
+    "abilities": [
+      {
+        "id": "grand_klaive_crinos_rage",
+        "label": "Grand Klaive (Crinos bonus)",
+        "sourceText": "When in Crinos form, the owner acts at +1 Rage.",
+        "trigger": { "type": "static" },
+        "condition": { "type": "holderIsCrinos" },
+        "effect": { "type": "statBonus", "stat": "Rage", "amount": 1 },
+        "note": "Grand Klaive's other clause (all damage it deals is aggravated) is a combat-engine concern, not scripted here yet."
+      }
+    ]
+  },
+
+  "Battle Song": {
+    "abilities": [
+      {
+        "id": "battle_song_boost",
+        "label": "Battle Song",
+        "sourceText": "The Galliard's pack plays Combat Actions at +2 Rage for the current turn. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "condition": { "type": "packHasKeyword", "keyword": "Galliard" },
+        "effect": { "type": "modifyPackStat", "stat": "rageMod", "amount": 2 },
+        "then": { "type": "discardSelf" },
+        "note": "Simplified reading: the whole pack benefits if it contains a Galliard, rather than resolving exactly who 'the Galliard's pack' refers to."
+      }
+    ]
+  },
+
+  "Mokole Hide": {
+    "abilities": [
+      {
+        "id": "mokole_hide_health",
+        "label": "Mokole Hide",
+        "sourceText": "The owner of this fetish gains +2 Health. A character cannot have more than 1 Mokole Hide at a time.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Health", "amount": 2 },
+        "note": "Unconditional — omitting 'condition' means it always applies while equipped. The 'only 1 at a time' restriction isn't enforced (no resource-phase card checks play restrictions yet, matching the existing simplification level)."
+      }
+    ]
+  },
+
+  "Portable Computer": {
+    "abilities": [
+      {
+        "id": "portable_computer_gnosis",
+        "label": "Portable Computer",
+        "sourceText": "A portable computer gives its user +2 Gnosis.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Gnosis", "amount": 2 },
+        "note": "Only the passive +2 Gnosis is scripted. 'Discard at any time to look at an opponent's hand' is an activated ability — a trigger kind that doesn't exist yet. Also unenforced: 'Can only be used by a Glass Walker'."
+      }
+    ]
+  },
+
+  "Tim Rowantree": {
+    "abilities": [
+      {
+        "id": "tim_rowantree_caern_rage",
+        "label": "Tim Rowantree (caern Rage bonus)",
+        "sourceText": "If Tim's pack gets a caern, Tim gains +2 Rage and +1 Health.",
+        "trigger": { "type": "static" },
+        "condition": { "type": "packHasCaern" },
+        "effect": { "type": "statBonus", "stat": "Rage", "amount": 2 }
+      },
+      {
+        "id": "tim_rowantree_caern_health",
+        "label": "Tim Rowantree (caern Health bonus)",
+        "sourceText": "If Tim's pack gets a caern, Tim gains +2 Rage and +1 Health.",
+        "trigger": { "type": "static" },
+        "condition": { "type": "packHasCaern" },
+        "effect": { "type": "statBonus", "stat": "Health", "amount": 1 }
+      }
+    ]
+  },
+
+  "Blood-on-the-Wind": {
+    "abilities": [
+      {
+        "id": "blood_on_the_wind_wendigo_rage",
+        "label": "Blood-on-the-Wind (Wendigo pack bonus)",
+        "sourceText": "All Wendigo in the same pack as Blood-on-the-Wind gain +1 Rage.",
+        "trigger": { "type": "static" },
+        "scope": { "type": "packKeyword", "keyword": "Wendigo" },
+        "effect": { "type": "statBonus", "stat": "Rage", "amount": 1 }
+      }
+    ]
+  },
+
+  "Gunnar Draugrbane": {
+    "abilities": [
+      {
+        "id": "gunnar_draugrbane_rage",
+        "label": "Gunnar Draugrbane (Rage)",
+        "sourceText": "Can change into Crinos form whenever and as often as you choose. +4 Rage, +5 Health. Weakness: Gunnar cannot use any Gifts.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Rage", "amount": 4 },
+        "note": "Only the flat +4 Rage / +5 Health are scripted. Unenforced: unrestricted Crinos flipping, and the 'no new Gifts' weakness (no restriction/prohibition verb exists yet)."
+      },
+      {
+        "id": "gunnar_draugrbane_health",
+        "label": "Gunnar Draugrbane (Health)",
+        "sourceText": "Can change into Crinos form whenever and as often as you choose. +4 Rage, +5 Health. Weakness: Gunnar cannot use any Gifts.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Health", "amount": 5 }
+      }
+    ]
+  },
+
+  "Old Red Eagle": {
+    "abilities": [
+      {
+        "id": "old_red_eagle_gnosis",
+        "label": "Old Red Eagle (Gnosis)",
+        "sourceText": "Each pack member can regenerate an extra damage card during the Regeneration Phase. +4 Gnosis. Weakness: -3 Health (never less than 1).",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Gnosis", "amount": 4 }
+      },
+      {
+        "id": "old_red_eagle_health_penalty",
+        "label": "Old Red Eagle (Health penalty)",
+        "sourceText": "Each pack member can regenerate an extra damage card during the Regeneration Phase. +4 Gnosis. Weakness: -3 Health (never less than 1).",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Health", "amount": -3 },
+        "note": "effectiveHealth() already floors at 1 (Math.max(1, ...)), so 'never less than 1' falls out for free."
+      },
+      {
+        "id": "old_red_eagle_extra_regen",
+        "label": "Old Red Eagle's Blessing",
+        "sourceText": "Each pack member can regenerate an extra damage card during the Regeneration Phase. +4 Gnosis. Weakness: -3 Health (never less than 1).",
+        "trigger": { "type": "phaseAction", "phase": "regen" },
+        "effect": { "type": "healChosenPackMember" },
+        "note": "Reuses the same verb as Kinfolk Veterinarian's ability. Text says 'each pack member CAN' (i.e. one extra heal per pack member, not just one total) — simplified here to grant one extra-heal choice per source card in play, same as the Vet. Worth a second look."
+      }
+    ]
+  },
+
+  "Unicorn": {
+    "abilities": [
+      {
+        "id": "unicorn_extra_regen",
+        "label": "Unicorn's Blessing",
+        "sourceText": "One pack member may regenerate 1 additional damage card during your Regeneration Phase. A pack may not have more than 1 Pack Totem at any time.",
+        "trigger": { "type": "phaseAction", "phase": "regen" },
+        "effect": { "type": "healChosenPackMember" },
+        "note": "Same verb as Kinfolk Veterinarian's ability. Required an Event play-pathway fix (Events had no legal-action branch at all until this batch). 'No more than 1 Pack Totem' unenforced, matching the existing simplification level for play restrictions."
+      }
+    ]
+  },
+
+  "War Paint of Wahya Ohni": {
+    "abilities": [
+      {
+        "id": "wahya_ohni_extra_regen",
+        "label": "War Paint of Wahya Ohni",
+        "sourceText": "When applied, the Garou heals twice as quickly. Remove 1 additional damage card from the owner of this fetish during the Regeneration Phase.",
+        "trigger": { "type": "phaseAction", "phase": "regen" },
+        "effect": { "type": "healChosenPackMember", "targetScope": "holder" },
+        "note": "New targetScope:'holder' option — unlike the Vet/Unicorn/Old Red Eagle (choose any pack member), this always heals whoever's wearing it, never a free choice."
+      }
+    ]
+  },
+
+  "Mother's Touch": {
+    "abilities": [
+      {
+        "id": "mothers_touch_heal",
+        "label": "Mother's Touch",
+        "sourceText": "This Gift heals the lowest damage card from the target, up to a damage 4 card. This Gift will heal aggravated damage. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "healTarget" },
+        "then": { "type": "discardSelf" },
+        "note": "First card using a play-time target rather than 'whole pack' or 'holder'. Reuses the existing Gift target pool (own pack/allies only) — no targetRequirement needed since it doesn't cross the player boundary. The 'up to damage 4' cap isn't enforced; regenerate() already heals the lowest card first, so this only matters in edge cases."
+      }
+    ]
+  },
+
+  "Inbred Disorder": {
+    "targetRequirement": { "scope": "anyCharacter", "keyword": "Silver Fangs" },
+    "abilities": [
+      {
+        "id": "inbred_disorder_gnosis",
+        "label": "Inbred Disorder",
+        "sourceText": "Choose 1 Silver Fangs. The character suffers from a slight mental abnormality. She acts at -2 Gnosis for the rest of the game. A character may not be affected by more than 1 Inbred Disorder.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Gnosis", "amount": -2 },
+        "note": "First card targeting across the player boundary — Silver Fangs on either side are eligible, not just the caster's own pack. Reuses the existing static/attachment machinery unchanged once attached. 'May not be affected by more than 1' isn't enforced, matching the existing simplification level for play restrictions."
+      }
+    ]
+  },
+
+  "Curse of Hatred": {
+    "targetRequirement": { "scope": "anyCharacter" },
+    "abilities": [
+      {
+        "id": "curse_of_hatred_rage_penalty",
+        "label": "Curse of Hatred",
+        "sourceText": "The character looks into his opponent's eyes and focuses his hatred, disheartening his foe. The target plays her next Combat Action at -2 Rage. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "modifyTargetStat", "stat": "rageMod", "amount": -2 },
+        "then": { "type": "discardSelf" },
+        "note": "Simplified 'next Combat Action' to 'until end of turn' (same simplification as Battle Song) — rageMod is already cleared once per turn by the existing clearTurnModifiers(), and there's no per-card-play cleanup hook to expire it after exactly one combat action instead."
+      }
+    ]
+  },
+
+  "Whelp Body": {
+    "targetRequirement": { "scope": "anyCharacter" },
+    "abilities": [
+      {
+        "id": "whelp_body_rage_penalty",
+        "label": "Whelp Body",
+        "sourceText": "The target of this Gift acts at -3 Rage. The target's Rage may never drop below 1 as a result of this Gift. This Gift lasts until canceled.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Rage", "amount": -3 },
+        "note": "The floor-of-1 (rather than the engine's default floor-of-0) isn't enforced. 'Until canceled' has no cancel mechanism yet, so this is effectively permanent once attached — same simplification as Inbred Disorder."
+      }
+    ]
+  },
+
+  "Take the True Form": {
+    "targetRequirement": { "scope": "anyCharacter" },
+    "abilities": [
+      {
+        "id": "take_true_form_flip",
+        "label": "Take the True Form",
+        "sourceText": "The user forces any shapechanger to revert to his breed form. If this kills the character in combat, the victim's opponent gains victory points for the kill. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "forceBreedForm" },
+        "then": { "type": "discardSelf" },
+        "note": "Only the core force-flip is scripted (reuses flipToBreed()). The victory-points-for-a-kill clause and the 2014 errata (counterable by flipping to Crinos/Frenzy in response) aren't implemented — both need capabilities (death-triggered VP, response windows) that don't exist yet."
+      }
+    ]
+  },
+
+  "Serenity": {
+    "targetRequirement": { "scope": "anyCharacter" },
+    "abilities": [
+      {
+        "id": "serenity_cancel_frenzy",
+        "label": "Serenity",
+        "sourceText": "This Gift cancels a frenzy. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "setFrenzied", "value": false },
+        "then": { "type": "discardSelf" },
+        "note": "Nothing currently sets frenzied=true — Song of Rage, the natural pairing, needed a caster-vs-target Gnosis comparison the targeting system doesn't support yet, so it's deferred rather than approximated. Tested here with a synthetic frenzied instance."
+      }
+    ]
+  },
+
+  "Alaskan Wolf Hunt": {
+    "abilities": [
+      {
+        "id": "alaskan_wolf_hunt_removal",
+        "label": "Alaskan Wolf Hunt",
+        "sourceText": "Humans are exterminating native wolves. Red Talons are caught in the hunt. All Red Talons characters must go into the Hunting Grounds until the next Regeneration Phase. Only 1 Alaskan Wolf Hunt may be played per game.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeFromPlayUntilPhase", "scope": "keywordBothSides", "keyword": "Red Talons", "returnPhase": "regen" },
+        "note": "Affects every Red Talons character on both sides, not just the caster's — this is an external event, not a directed attack. Modeled as removed-from-play generally rather than physically placed in GameState.huntingGrounds, since that array is already treated as attackable prey by getCombatActions() — reusing it would let the opponent attack someone who's supposed to be untouchable. 'Only 1 per game' unenforced, matching established precedent for play restrictions."
+      }
+    ]
+  },
+
+  "Ragnarok": {
+    "abilities": [
+      {
+        "id": "ragnarok_removal",
+        "label": "Ragnarok",
+        "sourceText": "The Get of Fenris believe that the Final Battle is upon them. All Get of Fenris go to the Hunting Grounds until the next Regeneration Phase. Only 1 Ragnarok can be played per game.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeFromPlayUntilPhase", "scope": "keywordBothSides", "keyword": "Get of Fenris", "returnPhase": "regen" },
+        "note": "Same shape as Alaskan Wolf Hunt, different tribe."
+      }
+    ]
+  },
+
+  "Burrow": {
+    "abilities": [
+      {
+        "id": "burrow_removal",
+        "label": "Burrow",
+        "sourceText": "The user burrows into the ground to escape combat. The Metis may not be attacked or called out until she comes out, and may not take any actions during this time. The Metis comes out at the beginning of the next Regeneration Phase. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeFromPlayUntilPhase", "scope": "target", "returnPhase": "regen" },
+        "then": { "type": "discardSelf" },
+        "note": "Source data for this card was truncated at 'Discard this Gift after'; Project Lead verified the complete text directly, confirming the discardSelf inference was correct. 'May not be attacked or take actions' falls out for free from being physically removed from the pack array. Doesn't yet end an in-progress combat the character might be in — that needs combat.js integration."
+      }
+    ]
+  },
+
+  "Moon Bridge Escape": {
+    "abilities": [
+      {
+        "id": "moon_bridge_escape_removal",
+        "label": "Moon Bridge Escape",
+        "sourceText": "The Gift user gives any 1 willing character or pack passage over a Moon Bridge. Characters are immediately removed from play until the next Redraw Phase. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeFromPlayUntilPhase", "scope": "target", "returnPhase": "redraw" },
+        "then": { "type": "discardSelf" },
+        "note": "Only the single-character case is scripted; the 'or pack' whole-pack removal option isn't. Also doesn't yet end an in-progress combat the target might be in, per the card's own errata clarification — that needs combat.js integration, same gap as Burrow."
+      }
+    ]
+  },
+
+  "Greater Banishment": {
+    "targetRequirement": { "scope": "anyAttachment", "cardType": "Gift" },
+    "abilities": [
+      {
+        "id": "greater_banishment_remove",
+        "label": "Greater Banishment",
+        "sourceText": "The user cancels any Gift. Remove the target Gift from play. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeAttachedCard" },
+        "then": { "type": "discardSelf" },
+        "note": "First card targeting an attached card instance rather than a character — new targetRequirement scope 'anyAttachment'. No Gnosis-cost ceiling on the target, unlike the two variants below."
+      }
+    ]
+  },
+
+  "Lesser Banishment": {
+    "targetRequirement": { "scope": "anyAttachment", "cardType": "Gift", "maxGnosis": 5 },
+    "abilities": [
+      {
+        "id": "lesser_banishment_remove",
+        "label": "Lesser Banishment",
+        "sourceText": "The user cancels any 1 Gift that requires Gnosis 5 or less. Remove the target Gift from play. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeAttachedCard" },
+        "then": { "type": "discardSelf" }
+      }
+    ]
+  },
+
+  "Remove Gaia's Blessing": {
+    "targetRequirement": { "scope": "anyAttachment", "cardType": "Gift", "maxGnosis": 7 },
+    "abilities": [
+      {
+        "id": "remove_gaias_blessing",
+        "label": "Remove Gaia's Blessing",
+        "sourceText": "The user cancels any 1 Gift that requires Gnosis 7 or less. Remove the target Gift from play. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeAttachedCard" },
+        "then": { "type": "discardSelf" }
+      }
+    ]
+  },
+
+  "Jam Technology": {
+    "targetRequirement": { "scope": "anyAttachment", "cardType": "Equipment" },
+    "abilities": [
+      {
+        "id": "jam_technology_remove",
+        "label": "Jam Technology",
+        "sourceText": "The character may disable any 1 non-fetish item. The chosen item is immediately discarded. Discard this Gift after its effect takes place.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "removeAttachedCard" },
+        "then": { "type": "discardSelf" },
+        "note": "'Non-fetish' restriction unenforced — Equipment has no structured fetish/non-fetish subtype in the data (even Mokole Hide, whose own text calls it 'this fetish', is just Type:'Equipment')."
+      }
+    ]
+  },
+
+  "Anna-Eyes of the Sun-Pelfrey": {
+    "abilities": [{
+      "id": "anna_eyes_voting_renown",
+      "label": "Anna-Eyes (voting Renown)",
+      "sourceText": "Anna has +1 Renown for moot votes.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 1 }
+    }]
+  },
+
+  "Cernonous": {
+    "abilities": [{
+      "id": "cernonous_voting_renown",
+      "label": "Cernonous (voting Renown penalty)",
+      "sourceText": "Cernonous is considered -1 Renown for moot voting due to his Metis disfigurement.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": -1 }
+    }]
+  },
+
+  "Grek Twice-Tongue": {
+    "abilities": [{
+      "id": "grek_voting_renown",
+      "label": "Grek Twice-Tongue (voting Renown)",
+      "sourceText": "Despite his Metis breed, Grek is considered +1 Renown for moot voting.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 1 }
+    }]
+  },
+
+  "Grimfang": {
+    "abilities": [{
+      "id": "grimfang_voting_renown",
+      "label": "Grimfang (voting Renown)",
+      "sourceText": "Grimfang is considered +3 Renown for moot voting.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 3 }
+    }]
+  },
+
+  "Pearl River": {
+    "abilities": [{
+      "id": "pearl_river_voting_renown",
+      "label": "Pearl River (voting Renown)",
+      "sourceText": "Pearl is considered +2 Renown for moot voting.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 2 }
+    }]
+  },
+
+  "Yuri Tvarivich": {
+    "abilities": [
+      {
+        "id": "yuri_voting_renown",
+        "label": "Yuri Tvarivich (voting Renown)",
+        "sourceText": "+8 Renown for any moot votes. +1 Health. Weakness: None.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 8 }
+      },
+      {
+        "id": "yuri_health",
+        "label": "Yuri Tvarivich (Health)",
+        "sourceText": "+8 Renown for any moot votes. +1 Health. Weakness: None.",
+        "trigger": { "type": "static" },
+        "effect": { "type": "statBonus", "stat": "Health", "amount": 1 }
+      }
+    ]
+  },
+
+  "Glib Tongue": {
+    "abilities": [{
+      "id": "glib_tongue_voting_renown",
+      "label": "Glib Tongue",
+      "sourceText": "This Gift gives the user +5 Renown for the current moot vote. Discard this Gift after its effect takes place.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 5 },
+      "note": "Simplified from a one-shot 'current vote only' boost to a permanent static bonus. A true one-shot needs the Gift to stay attached until a moot is actually called (which happens later, in a different phase, as a separate action) and only then discard — that's a real timing gap, not just an unenforced restriction, so it's been simplified rather than partially implemented."
+    }]
+  },
+
+  "Persuasion": {
+    "abilities": [{
+      "id": "persuasion_voting_renown",
+      "label": "Persuasion",
+      "sourceText": "The user of this Gift gains +1 Renown for moot voting. This Gift lasts until canceled.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 1 },
+      "note": "'Until canceled' has no cancel mechanism yet, so effectively permanent — same simplification as Inbred Disorder/Whelp Body."
+    }]
+  },
+
+  "Rite of Investiture": {
+    "playCondition": { "type": "hadSuccessfulMootThisPhase" },
+    "targetRequirement": { "scope": "ownAllies" },
+    "abilities": [
+      {
+        "id": "rite_of_investiture_promote",
+        "label": "Rite of Investiture",
+        "sourceText": "Play at the end of a Moot Phase in which 1 of your characters successfully called a moot. You may select any 1 ally and make him a full member of your pack. As such, that ally may now take any action, including voting in moots, that any other pack member may take.",
+        "trigger": { "type": "onPlay" },
+        "effect": { "type": "promoteAllyToPack" },
+        "then": { "type": "discardSelf" },
+        "note": "First card using checkPlayCondition and the new Rite play-pathway. Simplified 'at the end of a Moot Phase' to 'any time during the Moot Phase, once a moot has passed' — offering it only at the literal end would need a phase-exit hook that doesn't exist yet, and the practical effect (the ally is promoted before combat) is the same either way."
+      }
+    ]
+  },
+
+  "Carla Grimsson": {
+    "abilities": [
+      {
+        "id": "carla_grimsson_crinos_on_fail",
+        "label": "Carla Grimsson (forced Crinos)",
+        "sourceText": "If a moot called by Carla's pack does not pass, she shifts to Crinos and must be alpha for that turn's Combat Phase.",
+        "trigger": { "type": "onMootOutcome", "outcome": "fail" },
+        "effect": { "type": "flipToCrinos" },
+        "note": "First card using the new onMootOutcome trigger. Pack-scoped per the card text ('a moot called by Carla's pack', not 'a moot Carla herself called') — fires for any failed moot her pack calls, matching how doCallMoot's tally is pack-level, not attributed to a specific caller."
+      },
+      {
+        "id": "carla_grimsson_forced_alpha_on_fail",
+        "label": "Carla Grimsson (forced alpha)",
+        "sourceText": "If a moot called by Carla's pack does not pass, she shifts to Crinos and must be alpha for that turn's Combat Phase.",
+        "trigger": { "type": "onMootOutcome", "outcome": "fail" },
+        "effect": { "type": "forceAlpha" },
+        "note": "New forceAlpha verb — enterCombat() now checks for a forced alpha before falling back to the normal highest-Renown auto-selection. Single-turn: the flag clears itself once consumed."
+      }
+    ]
+  },
+
+  "Falcon": {
+    "abilities": [{
+      "id": "falcon_voting_renown",
+      "label": "Falcon (pack-wide voting Renown)",
+      "sourceText": "Each pack member gains 1 Renown for moot voting. A pack may not have more than 1 Pack Totem at any time.",
+      "trigger": { "type": "static" },
+      "scope": { "type": "packKeyword" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 1 },
+      "note": "First pack-wide bonus sourced from an Event rather than a character or attachment — packWideBonus's source pool now includes played events. No keyword filter (applies to the whole pack unconditionally). 'No more than 1 Pack Totem' unenforced, matching precedent."
+    }]
+  },
+
+  "Fenris": {
+    "abilities": [{
+      "id": "fenris_rage_in_crinos",
+      "label": "Fenris (pack-wide Rage in Crinos)",
+      "sourceText": "All pack members gain 1 Rage when in Crinos form. A pack may not have more than 1 Pack Totem at any time.",
+      "trigger": { "type": "static" },
+      "scope": { "type": "packKeyword" },
+      "condition": { "type": "holderIsCrinos" },
+      "effect": { "type": "statBonus", "stat": "Rage", "amount": 1 },
+      "note": "Combines the unconditional pack-wide scope with the existing holderIsCrinos condition (previously only used for a single equipped character, e.g. Grand Klaive) — same condition check, now applied per pack member."
+    }]
+  },
+
+  "Pegasus": {
+    "abilities": [{
+      "id": "pegasus_gnosis",
+      "label": "Pegasus (pack-wide Gnosis)",
+      "sourceText": "Each pack member gains 1 Gnosis. A pack may not have more than 1 Pack Totem at any time.",
+      "trigger": { "type": "static" },
+      "scope": { "type": "packKeyword" },
+      "effect": { "type": "statBonus", "stat": "Gnosis", "amount": 1 }
+    }]
+  },
+
+  "Rat": {
+    "abilities": [{
+      "id": "rat_health",
+      "label": "Rat (pack-wide Health)",
+      "sourceText": "Each pack member gains 1 Health. A pack may not have more than 1 Pack Totem at any time.",
+      "trigger": { "type": "static" },
+      "scope": { "type": "packKeyword" },
+      "effect": { "type": "statBonus", "stat": "Health", "amount": 1 }
+    }]
+  },
+
+  "Chimera": {
+    "abilities": [{
+      "id": "chimera_hand_size",
+      "label": "Chimera",
+      "sourceText": "Increases your sept hand size by 1. A pack may not have more than 1 Pack Totem at any time.",
+      "trigger": { "type": "onPlay" },
+      "effect": { "type": "increasePlayerStat", "stat": "septHandSize", "amount": 1 },
+      "note": "First effect touching player-level state rather than a character stat — new increasePlayerStat verb, a direct one-time mutation rather than a continuously-queried modifier, since septHandSize isn't recomputed per-character the way Rage/Gnosis are."
+    }]
+  },
+
+  "Elder Stone": {
+    "abilities": [{
+      "id": "elder_stone_votes",
+      "label": "Elder Stone",
+      "sourceText": "The owner of this stone gains an additional 3 votes during any moot. The owner can discard this stone during a moot and gain an additional 10 votes. A character cannot have more than 1 Elder Stone at a time.",
+      "trigger": { "type": "static" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 3 },
+      "note": "'Votes' mapped onto VotingRenown, the same currency doCallMoot already tallies — a reasonable rename rather than building a separate 'votes' concept for one card. Only the passive +3 is scripted; the discard-for-+10 option is an activated ability, a trigger kind that doesn't exist yet (same gap as Portable Computer's peek ability)."
+    }]
+  },
+
+  "Kinfolk TV Reporter": {
+    "abilities": [{
+      "id": "tv_reporter_votes",
+      "label": "Kinfolk TV Reporter",
+      "sourceText": "Your pack gains 2 votes during all moots while the TV Reporter is in play, due to his ability to sway public opinion around events.",
+      "trigger": { "type": "static" },
+      "scope": { "type": "packKeyword" },
+      "effect": { "type": "statBonus", "stat": "VotingRenown", "amount": 2 },
+      "note": "Pack-wide bonus sourced from an Ally rather than an Event or character — same extended packWideBonus source pool as the Totem cards."
+    }]
+  }
+}
